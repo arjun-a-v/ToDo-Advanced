@@ -36,14 +36,14 @@
         }
 
         .nav-link {
-            color: #537d19 !important;
+            color: purple !important;
             font-family: myFirstFont;
             position: relative;
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .nav-link.active {
-            border-bottom: 3px solid #537d19;
+            border-bottom: 3px solid purple;
             padding-bottom: 2px;
             width: fit-content;
         }
@@ -75,13 +75,13 @@
         }
 
         body {
-            background: url('image/luxury-plain-green-gradient-abstract-studio-background-empty-room-with-space-your-text-picture.jpg') no-repeat center center fixed;
+            background: url('image/25031180_7020304.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
         .txt {
             font-family: mySecondFont;
-            color: darkgreen;
+            color: rgb(119, 3, 119);
         }
 
         .glass-effect {
@@ -90,10 +90,11 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 10px;
-            padding: 10px;
-            color: darkgreen;
+            padding: 20px;
+            color: purple;
             font-family: mySecondFont;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
 
         .input-group {
@@ -105,8 +106,8 @@
             border: 0;
             border-radius: 10px 0 0 10px;
             padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Added shadow */
-            background: rgba(255, 255, 255, 0.7); /* 60% white */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .input-group-append .btn {
@@ -115,7 +116,8 @@
         }
 
         .list-group-item {
-            margin-bottom: 10px; /* Decreased margin for closer spacing */
+            margin-bottom: 10px;
+            cursor: pointer; /* Indicates that the item can be moved */
         }
 
         .list-group-item.glass-effect {
@@ -135,8 +137,9 @@
             margin-left: auto;
         }
 
-        .btn-success, .btn-danger {
-            border-radius: 5px; /* Slightly rounded corners for buttons */
+        .btn-success,
+        .btn-danger {
+            border-radius: 5px;
         }
 
         @media only screen and (min-width: 992px) {
@@ -162,7 +165,13 @@
         }
 
         .btn1 {
-            background-color: darkgreen;
+            background-color: purple;
+            color: white;
+        }
+
+        .btn1:hover {
+            background-color: rgb(185, 20, 185);
+            color: white;
         }
 
         .btn2 {
@@ -171,8 +180,20 @@
         }
 
         .btn3 {
-            background-color: darkgreen;
+            background-color: purple;
             margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .btn3:hover {
+            background-color: rgb(185, 20, 185);
+            color: white;
+        }
+
+        .btn-group-custom {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -207,53 +228,68 @@
 
     <div class="list container mt-5">
         <h1 class="text-center txt">To-Do List</h1>
-        <div class="row">
+
+        <!-- Glass Effect Div with Input and Task List -->
+        <div class="row mt-3">
             <div class="col-md-8 offset-md-2">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control glass-effect" id="taskInput" placeholder="Enter a new task" aria-label="New task">
-                    <div class="input-group-append">
-                        <button class="btn btn1 btn-success" id="addTaskButton" aria-label="Add task">Add Task</button>
+                <div class="glass-effect">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="taskInput" placeholder="Enter a new task" aria-label="New task">
+                        <div class="input-group-append">
+                            <button class="btn btn1" id="addTaskButton" aria-label="Add task">Add Task</button>
+                        </div>
+                    </div>
+                    <h3 class="text-center txt" id="listTitle"></h3>
+                    <ul class="list-group" id="taskList" role="list"></ul>
+                    <div class="btn-group-custom mt-3">
+                        <button class="btn btn2 btn-danger" id="resetButton" aria-label="Reset all tasks">Reset All Tasks</button>
+                        <button class="btn btn3" id="toggleButton" aria-label="Switch List">Switch to List 2</button>
                     </div>
                 </div>
-                <ul class="list-group" id="taskList" role="list"></ul>
-                <button class="btn btn2 btn-danger mt-3" id="resetButton" aria-label="Reset all tasks">Reset All Tasks</button>
             </div>
         </div>
     </div>
 
     <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        function loadTasks() {
-            const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        let currentList = 'tasks-taskList1'; // Default to List 1
+
+        // Function to load tasks from local storage
+        function loadTasks(storageKey) {
+            const savedTasks = JSON.parse(localStorage.getItem(storageKey)) || [];
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
 
-            savedTasks.forEach(taskText => {
-                const listItem = createTaskElement(taskText);
+            savedTasks.forEach(task => {
+                const listItem = createTaskElement(task.text, task.completed);
                 taskList.appendChild(listItem);
             });
         }
 
-        function saveTasks() {
+        // Function to save tasks to local storage
+        function saveTasks(storageKey) {
             const taskList = document.getElementById('taskList');
             const tasks = [];
             taskList.querySelectorAll('li').forEach(listItem => {
                 const taskText = listItem.querySelector('span').textContent;
-                tasks.push(taskText);
+                const completed = listItem.querySelector('span').classList.contains('completed');
+                tasks.push({ text: taskText, completed: completed });
             });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
+            localStorage.setItem(storageKey, JSON.stringify(tasks));
         }
 
-        function createTaskElement(taskText) {
+        // Function to create a task element
+        function createTaskElement(taskText, completed = false) {
             const listItem = document.createElement('li');
             listItem.className = 'list-group-item glass-effect d-flex justify-content-between align-items-center';
             listItem.setAttribute('role', 'listitem');
+            listItem.draggable = true; // Make list items draggable
             listItem.innerHTML = `
-                <span>${taskText}</span>
+                <span ${completed ? 'class="completed"' : ''}>${taskText}</span>
                 <div class="btn-group ml-2">
                     <button class="btn btn-success btn-sm completeButton" aria-label="Complete task">Complete</button>
                     <button class="btn btn-danger btn-sm removeButton" aria-label="Remove task">Remove</button>
@@ -264,63 +300,92 @@
             const completeButton = listItem.querySelector('.completeButton');
             completeButton.addEventListener('click', function () {
                 listItem.querySelector('span').classList.toggle('completed');
-                saveTasks(); // Save tasks after completing
+                saveTasks(currentList);
             });
 
             // Add event listener to remove button
             const removeButton = listItem.querySelector('.removeButton');
             removeButton.addEventListener('click', function () {
                 listItem.remove();
-                saveTasks(); // Save tasks after removing
+                saveTasks(currentList);
+            });
+
+            // Add drag events
+            listItem.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', taskText);
+                e.dataTransfer.setData('text/html', listItem.outerHTML);
+                listItem.classList.add('dragging');
+            });
+
+            listItem.addEventListener('dragend', () => {
+                listItem.classList.remove('dragging');
+                saveTasks(currentList);
+            });
+
+            document.getElementById('taskList').addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const draggingItem = document.querySelector('.dragging');
+                const afterElement = getDragAfterElement(e.clientY);
+                if (afterElement == null) {
+                    document.getElementById('taskList').appendChild(draggingItem);
+                } else {
+                    document.getElementById('taskList').insertBefore(draggingItem, afterElement);
+                }
             });
 
             return listItem;
         }
 
-        // Function to add a new task
-        function addTask() {
-            const taskInput = document.getElementById('taskInput');
-            const taskList = document.getElementById('taskList');
-            const taskText = taskInput.value.trim();
-
-            if (taskText === '') {
-                taskInput.classList.add('is-invalid');
-                return;
-            }
-            taskInput.classList.remove('is-invalid');
-
-            const listItem = createTaskElement(taskText);
-            taskList.appendChild(listItem);
-            taskInput.value = '';
-
-            saveTasks(); // Save tasks after adding
+        // Function to get the element to drop after
+        function getDragAfterElement(y) {
+            const draggableElements = [...document.querySelectorAll('#taskList .list-group-item:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
         // Event listener for the add task button
-        document.getElementById('addTaskButton').addEventListener('click', addTask);
+        document.getElementById('addTaskButton').addEventListener('click', function () {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            if (taskText !== '') {
+                const listItem = createTaskElement(taskText);
+                document.getElementById('taskList').appendChild(listItem);
+                taskInput.value = '';
+                saveTasks(currentList);
+            }
+        });
 
         // Event listener for the reset button
         document.getElementById('resetButton').addEventListener('click', function () {
-            document.getElementById('taskList').innerHTML = '';
-            saveTasks(); // Save tasks after resetting
-        });
-
-        // Event listener for Enter key to add task
-        document.getElementById('taskInput').addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                addTask();
+            if (confirm('Are you sure you want to reset all tasks?')) {
+                document.getElementById('taskList').innerHTML = '';
+                saveTasks(currentList);
             }
         });
 
-        // Function to set the active class to the current navbar link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            if (link.href === window.location.href) {
-                link.classList.add('active');
+        // Event listener for the toggle button to switch between lists
+        document.getElementById('toggleButton').addEventListener('click', function () {
+            if (currentList === 'tasks-taskList1') {
+                currentList = 'tasks-taskList2';
+                this.textContent = 'Switch to List 1';
+                document.getElementById('listTitle').textContent = '';
+            } else {
+                currentList = 'tasks-taskList1';
+                this.textContent = 'Switch to List 2';
+                document.getElementById('listTitle').textContent = '';
             }
+            loadTasks(currentList);
         });
 
-        // Load tasks from local storage on page load
-        window.onload = loadTasks;
+        // Initial load
+        loadTasks(currentList);
     </script>
 </body>
 
