@@ -117,7 +117,7 @@
 
         .list-group-item {
             margin-bottom: 10px;
-            cursor: pointer; /* Indicates that the item can be moved */
+            cursor: pointer;
         }
 
         .list-group-item.glass-effect {
@@ -201,7 +201,8 @@
 <body class="body">
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <button class="navbar-toggler ml-auto" style="border: 0cm;" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler ml-auto" style="border: 0cm;" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fas fa-bars"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -234,7 +235,8 @@
             <div class="col-md-8 offset-md-2">
                 <div class="glass-effect">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="taskInput" placeholder="Enter a new task" aria-label="New task">
+                        <input type="text" class="form-control" id="taskInput" placeholder="Enter a new task"
+                            aria-label="New task">
                         <div class="input-group-append">
                             <button class="btn btn1" id="addTaskButton" aria-label="Add task">Add Task</button>
                         </div>
@@ -242,7 +244,8 @@
                     <h3 class="text-center txt" id="listTitle"></h3>
                     <ul class="list-group" id="taskList" role="list"></ul>
                     <div class="btn-group-custom mt-3">
-                        <button class="btn btn2 btn-danger" id="resetButton" aria-label="Reset all tasks">Reset All Tasks</button>
+                        <button class="btn btn2 btn-danger" id="resetButton" aria-label="Reset all tasks">Reset All
+                            Tasks</button>
                         <button class="btn btn3" id="toggleButton" aria-label="Switch List">Switch to List 2</button>
                     </div>
                 </div>
@@ -263,7 +266,6 @@
             const savedTasks = JSON.parse(localStorage.getItem(storageKey)) || [];
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = '';
-
             savedTasks.forEach(task => {
                 const listItem = createTaskElement(task.text, task.completed);
                 taskList.appendChild(listItem);
@@ -274,10 +276,11 @@
         function saveTasks(storageKey) {
             const taskList = document.getElementById('taskList');
             const tasks = [];
-            taskList.querySelectorAll('li').forEach(listItem => {
-                const taskText = listItem.querySelector('span').textContent;
-                const completed = listItem.querySelector('span').classList.contains('completed');
-                tasks.push({ text: taskText, completed: completed });
+            taskList.querySelectorAll('li').forEach(item => {
+                tasks.push({
+                    text: item.querySelector('span').textContent,
+                    completed: item.querySelector('span').classList.contains('completed')
+                });
             });
             localStorage.setItem(storageKey, JSON.stringify(tasks));
         }
@@ -296,10 +299,37 @@
                 </div>
             `;
 
+            const taskSpan = listItem.querySelector('span');
+
+            // Add double-click event listener for editing
+            taskSpan.addEventListener('dblclick', function () {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = taskSpan.textContent;
+                input.className = 'form-control'; // Apply Bootstrap styling to the input
+
+                // Replace the task text with the input field
+                taskSpan.replaceWith(input);
+                input.focus();
+
+                // Handle saving the new task text
+                input.addEventListener('blur', function () {
+                    taskSpan.textContent = input.value.trim() || taskText; // Keep old text if input is empty
+                    input.replaceWith(taskSpan);
+                    saveTasks(currentList);
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        input.blur(); // Trigger the blur event to save the text
+                    }
+                });
+            });
+
             // Add event listener to complete button
             const completeButton = listItem.querySelector('.completeButton');
             completeButton.addEventListener('click', function () {
-                listItem.querySelector('span').classList.toggle('completed');
+                taskSpan.classList.toggle('completed');
                 saveTasks(currentList);
             });
 
@@ -336,9 +366,10 @@
             return listItem;
         }
 
-        // Function to get the element to drop after
+        // Function to get the element to place the dragged item after
         function getDragAfterElement(y) {
-            const draggableElements = [...document.querySelectorAll('#taskList .list-group-item:not(.dragging)')];
+            const draggableElements = [...document.querySelectorAll('.list-group-item:not(.dragging)')];
+
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
                 const offset = y - box.top - box.height / 2;
@@ -350,7 +381,6 @@
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
-        // Event listener for the add task button
         document.getElementById('addTaskButton').addEventListener('click', function () {
             const taskInput = document.getElementById('taskInput');
             const taskText = taskInput.value.trim();
@@ -362,31 +392,27 @@
             }
         });
 
-        // Event listener for the reset button
         document.getElementById('resetButton').addEventListener('click', function () {
-            if (confirm('Are you sure you want to reset all tasks?')) {
-                document.getElementById('taskList').innerHTML = '';
-                saveTasks(currentList);
-            }
-        });
-
-        // Event listener for the toggle button to switch between lists
-        document.getElementById('toggleButton').addEventListener('click', function () {
-            if (currentList === 'tasks-taskList1') {
-                currentList = 'tasks-taskList2';
-                this.textContent = 'Switch to List 1';
-                document.getElementById('listTitle').textContent = '';
-            } else {
-                currentList = 'tasks-taskList1';
-                this.textContent = 'Switch to List 2';
-                document.getElementById('listTitle').textContent = '';
-            }
+            localStorage.removeItem(currentList);
             loadTasks(currentList);
         });
 
-        // Initial load
+        document.getElementById('toggleButton').addEventListener('click', function () {
+            currentList = currentList === 'tasks-taskList1' ? 'tasks-taskList2' : 'tasks-taskList1';
+            loadTasks(currentList);
+            this.textContent = currentList === 'tasks-taskList1' ? 'Switch to List 2' : 'Switch to List 1';
+        });
+
+        document.getElementById('taskInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                document.getElementById('addTaskButton').click();
+            }
+        });
+
+        // Load tasks when the page is loaded
         loadTasks(currentList);
     </script>
 </body>
 
 </html>
+
