@@ -35,14 +35,14 @@
         }
 
         .nav-link {
-            color: #537d19 !important;
+            color: purple !important;
             font-family: myFirstFont;
             position: relative;
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .nav-link.active {
-            border-bottom: 3px solid #537d19;
+            border-bottom: 3px solid purple;
             padding-bottom: 2px;
             width: fit-content;
         }
@@ -74,13 +74,13 @@
         }
 
         body {
-            background: url('image/luxury-plain-green-gradient-abstract-studio-background-empty-room-with-space-your-text-picture.jpg') no-repeat center center fixed;
+            background: url('image/25031180_7020304.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
         .txt {
             font-family: mySecondFont;
-            color: darkgreen;
+            color: purple;
         }
 
         .glass-effect {
@@ -90,7 +90,7 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 10px;
             padding: 10px;
-            color: darkgreen;
+            color: purple;
             font-family: mySecondFont;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -159,19 +159,19 @@
                 padding-top: 50px;
             }
         }
-
-        .btn1 {
-            background-color: darkgreen;
+        .btn1{
+            background-color: purple;
+            color: white;
+            font-family: mySecondFont;
         }
-
+        .btn1:hover{
+            background-color: rgb(185, 20, 185);
+            color: white;
+        }
         .btn2 {
             background-color: rgb(194, 23, 23);
             margin-bottom: 1rem;
-        }
-
-        .btn3 {
-            background-color: darkgreen;
-            margin-bottom: 1rem;
+            font-family: mySecondFont;
         }
     </style>
 </head>
@@ -210,7 +210,7 @@
                 <div class="input-group mb-3">
                     <input type="text" class="form-control glass-effect" id="taskInput" placeholder="Enter Book Name" aria-label="New book">
                     <div class="input-group-append">
-                        <button class="btn btn1 btn-success" id="addTaskButton" aria-label="Add book">Add book</button>
+                        <button class="btn btn1" id="addTaskButton" aria-label="Add book">Add book</button>
                     </div>
                 </div>
                 <ul class="list-group" id="taskList" role="list"></ul>
