@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <style>
+        @font-face {
+            font-family: myFirstFont;
+            src: url(fonts/Poppins-Regular.ttf);
+        }
+
+        @font-face {
+            font-family: mySecondFont;
+            src: url(fonts/Poppins-SemiBold.ttf);
+        }
+
+        .completed {
+            text-decoration: line-through;
+        }
+
+        .navbar-nav {
+            flex-direction: row;
+        }
+
+        .nav-item {
+            padding-left: 10px;
+            padding-right: 10px;
+            font-weight: 700;
+            font-size: larger;
+        }
+
+        .nav-link {
+            color: purple !important;
+            font-family: myFirstFont;
+            position: relative;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .nav-link.active {
+            border-bottom: 3px solid purple;
+            padding-bottom: 2px;
+            width: fit-content;
+        }
+
+        .nav-link:hover {
+            transform: scale(1.1);
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .navbar-toggler .fas {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar-toggler.collapsed .fas {
+            transform: rotate(180deg);
+        }
+
+        .navbar-nav {
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 5px;
+        }
+
+        body {
+            background: url('image/25031180_7020304.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .txt {
+            font-family: mySecondFont;
+            color: rgb(119, 3, 119);
+        }
+
+        .glass-effect {
+        
+            color: purple;
+            font-family: mySecondFont;
+        }
+
+        .input-group {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-control {
+            border: 0;
+            border-radius: 10px 0 0 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .input-group-append .btn {
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .list-group-item.glass-effect {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item .btn-group {
+            margin-left: auto;
+        }
+
+        .btn-success,
+        .btn-danger {
+            border-radius: 5px;
+        }
+
+        @media only screen and (min-width: 992px) {
+            .navbar {
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 30px;
+                padding: 0.5rem 1rem;
+                width: fit-content;
+                margin: auto;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 0.5rem;
+                height: 50px;
+            }
+
+            .list {
+                padding-top: 50px;
+            }
+        }
+
+        .btn1 {
+            background-color: purple;
+            color: white;
+        }
+
+        .btn1:hover {
+            background-color: rgb(185, 20, 185);
+            color: white;
+        }
+
+        .btn2 {
+            background-color: rgb(194, 23, 23);
+            margin-bottom: 1rem;
+        }
+
+        .btn3 {
+            background-color: purple;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .btn3:hover {
+            background-color: rgb(185, 20, 185);
+            color: white;
+        }
+
+        .btn-group-custom {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body class="body">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <button class="navbar-toggler ml-auto" style="border: 0cm;" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fas fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link " href="index.html">To-Do</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index3.html">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index1.html">Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index2.html">Timer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index4.html">Gallery</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="list container mt-5">
+        <h1 class="text-center txt">Books</h1>
+
+        <!-- Glass Effect Div with Input and Book List -->
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <div class="glass-effect">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="bookInput" placeholder="Enter Book Name"
+                            aria-label="New book">
+                        <div class="input-group-append">
+                            <button class="btn btn1" id="addBookButton" aria-label="Add book">Add Book</button>
+                        </div>
+                    </div>
+                    <h3 class="text-center txt" id="listTitle"></h3>
+                    <ul class="list-group" id="bookList" role="list"></ul>
+                    <div class="btn-group-custom mt-3">
+                        <button class="btn btn2 btn-danger" id="resetButton" aria-label="Reset all books">Delete All Books</button>
+                        <button class="btn btn3" id="toggleButton" aria-label="Switch List">Book List 2</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let currentList = 'books-bookList1'; // Default to List 1
+
+        // Function to load books from local storage
+        function loadBooks(storageKey) {
+            const savedBooks = JSON.parse(localStorage.getItem(storageKey)) || [];
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+            savedBooks.forEach(book => {
+                const listItem = createBookElement(book.text, book.completed);
+                bookList.appendChild(listItem);
+            });
+        }
+
+        // Function to save books to local storage
+        function saveBooks(storageKey) {
+            const bookList = document.getElementById('bookList');
+            const books = [];
+            bookList.querySelectorAll('li').forEach(item => {
+                books.push({
+                    text: item.querySelector('span').textContent,
+                    completed: item.querySelector('span').classList.contains('completed')
+                });
+            });
+            localStorage.setItem(storageKey, JSON.stringify(books));
+        }
+
+        // Function to create a book element
+        function createBookElement(bookText, completed = false) {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item glass-effect d-flex justify-content-between align-items-center';
+            listItem.setAttribute('role', 'listitem');
+            listItem.draggable = true; // Make list items draggable
+            listItem.innerHTML = `
+                <span ${completed ? 'class="completed"' : ''}>${bookText}</span>
+                <div class="btn-group ml-2">
+                    <button class="btn btn-success btn-sm completeButton" aria-label="Complete book">Complete</button>
+                    <button class="btn btn-danger btn-sm removeButton" aria-label="Remove book">Remove</button>
+                </div>
+            `;
+
+            const bookSpan = listItem.querySelector('span');
+
+            // Add double-click event listener for editing
+            bookSpan.addEventListener('dblclick', function () {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = bookSpan.textContent;
+                input.className = 'form-control'; // Apply Bootstrap styling to the input
+
+                // Replace the book text with the input field
+                bookSpan.replaceWith(input);
+                input.focus();
+
+                // Handle saving the new book text
+                input.addEventListener('blur', function () {
+                    bookSpan.textContent = input.value.trim() || bookText; // Keep old text if input is empty
+                    input.replaceWith(bookSpan);
+                    saveBooks(currentList);
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        input.blur(); // Trigger the blur event to save the text
+                    }
+                });
+            });
+
+            // Add event listener to complete button
+            const completeButton = listItem.querySelector('.completeButton');
+            completeButton.addEventListener('click', function () {
+                bookSpan.classList.toggle('completed');
+                saveBooks(currentList);
+            });
+            
+
+            // Add event listener to remove button
+            const removeButton = listItem.querySelector('.removeButton');
+            removeButton.addEventListener('click', function () {
+                listItem.remove();
+                saveBooks(currentList);
+            });
+
+            // Add drag events
+            listItem.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', bookText);
+                e.dataTransfer.setData('text/html', listItem.outerHTML);
+                listItem.classList.add('dragging');
+            });
+
+            listItem.addEventListener('dragend', () => {
+                listItem.classList.remove('dragging');
+                saveBooks(currentList);
+            });
+
+            document.getElementById('bookList').addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const draggingItem = document.querySelector('.dragging');
+                const afterElement = getDragAfterElement(e.clientY);
+                if (afterElement == null) {
+                    document.getElementById('bookList').appendChild(draggingItem);
+                } else {
+                    document.getElementById('bookList').insertBefore(draggingItem, afterElement);
+                }
+            });
+
+            return listItem;
+        }
+
+        // Function to get the element to place the dragged item after
+        function getDragAfterElement(y) {
+            const draggableElements = [...document.querySelectorAll('.list-group-item:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        document.getElementById('addBookButton').addEventListener('click', function () {
+            const bookInput = document.getElementById('bookInput');
+            const bookText = bookInput.value.trim();
+            if (bookText !== '') {
+                const listItem = createBookElement(bookText);
+                document.getElementById('bookList').appendChild(listItem);
+                bookInput.value = '';
+                saveBooks(currentList);
+            }
+        });
+
+        document.getElementById('resetButton').addEventListener('click', function () {
+            localStorage.removeItem(currentList);
+            loadBooks(currentList);
+        });
+
+        document.getElementById('toggleButton').addEventListener('click', function () {
+            if (currentList === 'books-bookList1') {
+                currentList = 'books-bookList2';
+                document.getElementById('toggleButton').textContent = 'Book List 1';
+            } else {
+                currentList = 'books-bookList1';
+                document.getElementById('toggleButton').textContent = 'Book List 2';
+            }
+            loadBooks(currentList);
+        });
+        document.getElementById('addBookButton').addEventListener('click', function () {
+    addBook();
+});
+
+document.getElementById('bookInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        addBook();
+    }
+});
+
+function addBook() {
+    const bookInput = document.getElementById('bookInput');
+    const bookText = bookInput.value.trim();
+    if (bookText !== '') {
+        const listItem = createBookElement(bookText);
+        document.getElementById('bookList').appendChild(listItem);
+        bookInput.value = '';
+        saveBooks(currentList);
+    }
+}
+
+
+        // Load the default book list on page load
+        loadBooks(currentList);
+    </script>
+</body>
+
+</html>
